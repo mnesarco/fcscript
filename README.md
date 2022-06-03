@@ -30,5 +30,5 @@ See: https://github.com/mnesarco/fcscript/blob/main/freecad/fcscript/demo/v_0_0_
 
 ## License
 
-GLP 3.0
+GPL 3.0
 
