@@ -20,4 +20,10 @@ to provide a simplified API for common operations.
 
 ## Install
 
-Use FreeCAD Builtin Addon Manager
+Use FreeCAD Builtin Addon Manager to install this package.
+
+## Documentation
+
+Once installed and restarted, you can find a demo Macro called: `FCScript_Demo.FCMacro`. This contains examples.
+
+See: https://github.com/mnesarco/fcscript/blob/main/freecad/fcscript/demo/v_0_0_1.py
