@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no" ?>
+<package format="1">
+  <name>FCScript</name>
+  <description>DSL For Macros</description>
+  <version>0.0.1</version>
+  <maintainer email="twitter: @mnesarco">Frank Martinez</maintainer>
+  <license file="LICENSE">GPL-3.0</license>
+  <url type="repository" branch="master">https://github.com/mnesarco/fcscript</url>
+  <url type="documentation">https://github.com/mnesarco/fcscript/wiki</url>
+
+  <content>
+    <!-- Macro Functions / DSL -->
+  </content>
+
+</package>
