@@ -4,6 +4,8 @@ Simple DSL for Macro writers. In other words, a simplified API for macro coders.
 
 Work In Progress ....
 
+![My Image](screenshot.jpg)
+
 ## Usage
 
 This AddOn is for people interested in writing macros for FreeCAD. The intention is 
