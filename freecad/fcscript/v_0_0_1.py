@@ -1341,6 +1341,30 @@ def InputInt(name=None, min=0, max=2^31, step=1, label=None, value=0, stretch=0,
 
 
 #  └────────────────────────────────────────────────────────────────────────────┘
+#    [SECTION] [GUI] [Widget] InputBoolean
+#  ┌────────────────────────────────────────────────────────────────────────────┐
+
+class QCheckBoxExt(QtGui.QCheckBox):
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+    
+    def value(self) -> bool:
+        return self.checkState() == QtCore.Qt.Checked
+
+    def setValue(self, value : bool):
+        self.setCheckState(QtCore.Qt.Checked if value else QtCore.Qt.Unchecked)
+
+
+def InputBoolean(name=None, label=None, value=False, stretch=0, alignment=QtCore.Qt.Alignment()):
+    editor = QCheckBoxExt()
+    editor.setValue(value)
+    if name:
+        editor.setObjectName(name)
+    place_widget(editor, label=label, stretch=stretch, alignment=alignment)
+    return editor
+
+
+#  └────────────────────────────────────────────────────────────────────────────┘
 #    [SECTION] [GUI] [Widget] InputSelectOne
 #  ┌────────────────────────────────────────────────────────────────────────────┐
 
