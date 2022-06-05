@@ -1363,6 +1363,36 @@ def InputBoolean(name=None, label=None, value=False, stretch=0, alignment=QtCore
     place_widget(editor, label=label, stretch=stretch, alignment=alignment)
     return editor
 
+#  └────────────────────────────────────────────────────────────────────────────┘
+#    [SECTION] [GUI] [Widget] InputVector
+#  ┌────────────────────────────────────────────────────────────────────────────┐
+
+class InputVectorWrapper:
+    def __init__(self, g, x, y, z):
+        self.group = g
+        self.x = x
+        self.y = y
+        self.z = z
+    
+    def value(self) -> Vec:
+        return Vec(self.x.value(), self.y.value(), self.z.value())
+
+    def setValue(self, value):
+        v = to_vec(value)
+        self.x.setValue(v.x)
+        self.y.setValue(v.y)
+        self.z.setValue(v.z)
+
+def InputVector(label=None, value=(0.0,0.0,0.0), stretch=0, alignment=QtCore.Qt.Alignment()):
+    with GroupBox(title=label) as g:
+        with Col():
+            x = InputFloat(label="X:")
+            y = InputFloat(label="Y:")
+            z = InputFloat(label="Z:")
+            widget = InputVectorWrapper(g, x, y, z)
+            widget.setValue(value)
+            return widget
+
 
 #  └────────────────────────────────────────────────────────────────────────────┘
 #    [SECTION] [GUI] [Widget] InputSelectOne

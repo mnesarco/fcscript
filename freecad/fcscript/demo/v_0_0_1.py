@@ -19,7 +19,7 @@
 # 
 
 from freecad.fcscript.v_0_0_1 import (
-    XBody, XSketch, Vec, Pnt, Quantity, recompute, Dx, Dy, Dz, Expr,
+    InputVector, XBody, XSketch, Vec, Pnt, Quantity, recompute, Dx, Dy, Dz, Expr,
     Dialog, InputFloat, InputInt, InputSelectMany, InputSelectOne, 
     InputBoolean, Icon, Row, Col, TabContainer, Tab,
     button, on_event, gq, progress_indicator, selection, 
@@ -225,9 +225,11 @@ def test10_diag2():
             it = InputInt(label="Iteration:")
             conv = InputFloat(label="Convolution:")
             active = InputBoolean(label="Active:")
+            pos = InputVector(label="Pos (Vector):", value=(10,20,30))
             @button(text="Dump")
             def btn():
                 print(f"rad={rad.value()}, sides={sides.value()}, it={it.value()}, conv={conv.value()}, active={active.value()}")
+                print(f"Pos={pos.value()}")
 
 
 def test11_diag3():
