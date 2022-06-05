@@ -11,14 +11,14 @@ Work In Progress ....
 This AddOn is for people interested in writing macros for FreeCAD. The intention is 
 to provide a simplified API for common operations.
 
-## Progress/TODO:
+## Estimated Progress/TODO:
 
-- [75%] Sketcher basic API
-- [75%] Basic GUI API
-- [5%] Dynamic/Expressions API
-- [0%] Draft basic API
-- [0%] PartDesign API
-- [0%] Part API
+- ![Progress](https://progress-bar.dev/50/) Sketcher basic API
+- ![Progress](https://progress-bar.dev/30/) Basic GUI API
+- ![Progress](https://progress-bar.dev/5/) Dynamic/Expressions API
+- ![Progress](https://progress-bar.dev/0/) Draft basic API
+- ![Progress](https://progress-bar.dev/0/) PartDesign API
+- ![Progress](https://progress-bar.dev/0/) Part API
 
 ## Install
 
