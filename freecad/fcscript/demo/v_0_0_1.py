@@ -344,6 +344,23 @@ def test17_parametric():
     dataObject.Whatever = Expr(".Extent*2.5 + 10")
 
 
+def test18_rounded_rect():
+    with Dialog("Test18: Simple Rounded Rect"):
+        with Col():
+            width = InputFloat(label="Width:", value=50)
+            length = InputFloat(label="Length:", value=50)
+            height = InputFloat(label="Height:", value=5)
+            radius = InputFloat(label="Border radius:", value=3)
+            @button(text="Create")
+            def create():
+                body = XBody(name='test18')
+                sketch = body.sketch(plane='XY', name='test18_sketch')
+                path = sketch.create_group()
+                path.rect_rounded(w=width.value(), h=length.value(), r=radius.value())
+                sketch.pad(height.value())
+                recompute()
+
+
 with Dialog(title="FCScript Demo") as dialog:
     if not App.ActiveDocument:
         App.newDocument()
@@ -404,3 +421,5 @@ with Dialog(title="FCScript Demo") as dialog:
             @button(text="Test17: Data Object")
             def run_test17(): test17_parametric()
 
+            @button(text="Test18: Rounded Rect")
+            def run_test18(): test18_rounded_rect()

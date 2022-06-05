@@ -1383,7 +1383,7 @@ class InputVectorWrapper:
         self.y.setValue(v.y)
         self.z.setValue(v.z)
 
-def InputVector(label=None, value=(0.0,0.0,0.0), stretch=0, alignment=QtCore.Qt.Alignment()):
+def InputVector(label=None, value=(0.0,0.0,0.0)):
     with GroupBox(title=label) as g:
         with Col():
             x = InputFloat(label="X:")
