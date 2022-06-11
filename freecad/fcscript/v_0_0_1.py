@@ -25,7 +25,7 @@
 from cmath import exp
 from contextlib import contextmanager
 from enum import Enum
-from typing import Any, Iterable, List, Optional, Tuple, Union
+from typing import Any, Dict, Iterable, List, Optional, Tuple, Union
 import math
 import sys
 import threading
@@ -1392,6 +1392,41 @@ def InputVector(label=None, value=(0.0,0.0,0.0)):
             widget = InputVectorWrapper(g, x, y, z)
             widget.setValue(value)
             return widget
+
+
+#  └────────────────────────────────────────────────────────────────────────────┘
+#    [SECTION] [GUI] [Widget] InputOptions
+#  ┌────────────────────────────────────────────────────────────────────────────┐
+
+class InputOptionsWrapper:
+    def __init__(self, combobox:QtGui.QComboBox, data: Dict[str,Any]):
+        self.combobox = combobox
+        self.index = dict()
+        self.lookup = dict()
+        i = 0
+        for label, value in data.items():
+            self.index[i] = value
+            self.lookup[value] = i
+            i += 1
+            combobox.addItem(label)
+
+    def value(self):
+        return self.index.get(self.combobox.currentIndex(), None)
+
+    def setValue(self, value):
+        index = self.lookup.get(value, None)
+        if index is not None:
+            self.combobox.setCurrentIndex(index)
+
+def InputOptions(options, value=None, label=None, name=None, stretch=0, alignment=QtCore.Qt.Alignment()):
+    widget = QtGui.QComboBox()
+    editor = InputOptionsWrapper(widget, options)
+    if value is not None:
+        editor.setValue(value)
+    if name:
+        editor.combobox.setObjectName(name)
+    place_widget(editor.combobox, label=label, stretch=stretch, alignment=alignment)
+    return editor
 
 
 #  └────────────────────────────────────────────────────────────────────────────┘

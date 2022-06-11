@@ -19,7 +19,7 @@
 # 
 
 from freecad.fcscript.v_0_0_1 import (
-    InputVector, XBody, XSketch, Vec, Pnt, Quantity, recompute, Dx, Dy, Dz, Expr,
+    InputOptions, InputVector, XBody, XSketch, Vec, Pnt, Quantity, recompute, Dx, Dy, Dz, Expr,
     Dialog, InputFloat, InputInt, InputSelectMany, InputSelectOne, 
     InputBoolean, Icon, Row, Col, TabContainer, Tab,
     button, on_event, gq, progress_indicator, selection, 
@@ -360,6 +360,20 @@ def test18_rounded_rect():
                 sketch.pad(height.value())
                 recompute()
 
+def test19_options():
+    with Dialog("Test19: Options"):
+        with Col():
+            # Key is the option label, Value can be anything
+            options = {
+                "Test 18": test18_rounded_rect,
+                "Test 12": test12_diag4,
+                "Test 15": test15_diag7
+            }
+            sel = InputOptions(options, value=test12_diag4, label="Select One Demo:")
+            @button(text="Run")
+            def run():
+                data_fn = sel.value()
+                data_fn()
 
 with Dialog(title="FCScript Demo") as dialog:
     if not App.ActiveDocument:
@@ -423,3 +437,6 @@ with Dialog(title="FCScript Demo") as dialog:
 
             @button(text="Test18: Rounded Rect")
             def run_test18(): test18_rounded_rect()
+
+            @button(text="Test19: Options")
+            def run_test19(): test19_options()
