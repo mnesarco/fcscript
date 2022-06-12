@@ -439,14 +439,24 @@ class XSketch:
         return c
 
 
-    def c_length(self, index, length, name=None):
-        c = self.obj.addConstraint(Sketcher.Constraint("Distance", index, length))
+    def c_length(self, index, length: Union[float, Expr], name=None):
+        if isinstance(length, Expr):
+            value = length(self.obj)
+            c = self.obj.addConstraint(Sketcher.Constraint("Distance", index, value))
+            length.set_to(self.obj, f'.Constraints[{c}]')
+        else:
+            c = self.obj.addConstraint(Sketcher.Constraint("Distance", index, length))
         self.rename_constraint(c, name)
         return c
 
 
-    def c_distance(self, g1, g1p, g2, g2p, dist, name=None):
-        c = self.obj.addConstraint(Sketcher.Constraint("Distance", g1, g1p, g2, g2p, dist))
+    def c_distance(self, g1, g1p, g2, g2p, dist: Union[float, Expr], name=None):
+        if isinstance(dist, Expr):
+            value = dist(self.obj)
+            c = self.obj.addConstraint(Sketcher.Constraint("Distance", g1, g1p, g2, g2p, value))
+            dist.set_to(self.obj, f'.Constraints[{c}]')
+        else:
+            c = self.obj.addConstraint(Sketcher.Constraint("Distance", g1, g1p, g2, g2p, dist))
         self.rename_constraint(c, name)
         return c
 
@@ -463,16 +473,23 @@ class XSketch:
         return c
 
 
-    def c_x(self, g, distance, anchor=GeomStart, name=None):
-        c = self.obj.addConstraint(Sketcher.Constraint("DistanceX", g, anchor, distance))
+    def _c_xy(self, g, distance, type, anchor=GeomStart, name=None):
+        if isinstance(distance, Expr):
+            value = distance(self.obj)
+            c = self.obj.addConstraint(Sketcher.Constraint(f"Distance{type}", g, anchor, value))
+            distance.set_to(self.obj, f'.Constraints[{c}]')
+        else:
+            c = self.obj.addConstraint(Sketcher.Constraint(f"Distance{type}", g, anchor, distance))
         self.rename_constraint(c, name)
         return c
+
+
+    def c_x(self, g, distance, anchor=GeomStart, name=None):
+        return self._c_xy(g, distance, 'X', anchor, name)
 
 
     def c_y(self, g, distance, anchor=GeomStart, name=None):
-        c = self.obj.addConstraint(Sketcher.Constraint("DistanceY", g, anchor, distance))
-        self.rename_constraint(c, name)
-        return c
+        return self._c_xy(g, distance, 'Y', anchor, name)
 
 
     def c_xy(self, g, x, y, anchor=GeomStart, name=None):
@@ -494,13 +511,23 @@ class XSketch:
 
 
     def c_diameter(self, g, diameter, name=None):
-        c = self.obj.addConstraint(Sketcher.Constraint("Diameter", g, diameter))
+        if isinstance(diameter, Expr):
+            value = diameter(self.obj)
+            c = self.obj.addConstraint(Sketcher.Constraint("Diameter", g, value))
+            diameter.set_to(self.obj, f'.Constraints[{c}]')
+        else:
+            c = self.obj.addConstraint(Sketcher.Constraint("Diameter", g, diameter))
         self.rename_constraint(c, name)
         return c
 
 
     def c_radius(self, g, radius, name=None):
-        c = self.obj.addConstraint(Sketcher.Constraint("Radius", g, radius))
+        if isinstance(radius, Expr):
+            value = radius(self.obj)
+            c = self.obj.addConstraint(Sketcher.Constraint("Radius", g, value))
+            radius.set_to(self.obj, f'.Constraints[{c}]')
+        else:
+            c = self.obj.addConstraint(Sketcher.Constraint("Radius", g, radius))
         self.rename_constraint(c, name)
         return c
 

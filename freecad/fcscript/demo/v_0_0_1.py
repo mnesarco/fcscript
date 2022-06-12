@@ -172,7 +172,6 @@ def test_7_polygons():
         def constrain_pos(fn, constrain, *args, **kwargs):
             fn(*args, **kwargs, constrain_pos=constrain)
 
-        path.line(dx=10)
         auto(path.regular_polygon, 50, 3)
         path.move(dx=50)
         constrain_pos(path.regular_polygon, True, 50, 4)
