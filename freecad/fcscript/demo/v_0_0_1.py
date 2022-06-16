@@ -69,7 +69,7 @@ def test2_partial(body, plane):
     s = body.sketch(plane=plane, name=plane)
     g = s.create_group()
 
-    x, y = g.pos[0], g.pos[1]
+    x, y = g.pos[0], g.pos[1] + 10
     x0 = x
     for row in range(rows):
         for col in range(cols):
@@ -79,7 +79,6 @@ def test2_partial(body, plane):
         x = x0
         y = y + h + sy
 
-    s.rotate(45)
     s.pad(10, name=f'Pad{plane}')
     recompute()
 
@@ -382,7 +381,7 @@ with Dialog(title="FCScript Demo") as dialog:
             @button(text="Test1: Basic Sketch")
             def run_test1(): test1()
 
-            @button(text="Test2: Planes")
+            @button(text="Test2: Planes (LinkStage3)")
             def run_test2(): test2()
 
             @button(text="Test3: Plate-Holes")
