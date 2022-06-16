@@ -18,13 +18,14 @@
 # along with FCScript.  If not, see <http://www.gnu.org/licenses/>.
 # 
 
+from math import cos, radians, sin, sqrt
 from freecad.fcscript.v_0_0_1 import (
     InputOptions, InputVector, XBody, XSketch, Vec, Pnt, Quantity, recompute, Dx, Dy, Dz, Expr,
     Dialog, InputFloat, InputInt, InputSelectMany, InputSelectOne, 
     InputBoolean, Icon, Row, Col, TabContainer, Tab,
     button, on_event, gq, progress_indicator, selection, 
     show_error, show_info, show_msgbox, show_warning,
-    DataObject, App
+    DataObject, App, Gui
 )
 
 def test1():
@@ -373,6 +374,26 @@ def test19_options():
                 data_fn = sel.value()
                 data_fn()
 
+
+def test20():
+    ''''Spiral'''
+    with progress_indicator("Working..."):
+        body = XBody(name='test20')
+        sketch = body.sketch(plane='XY', name='sketch')
+        path = sketch.create_group()
+        radius = 100
+        angle = 0
+        for t in range(60):
+            angle = radians(12*t)
+            x, y = radius * cos(angle), radius * sin(angle)
+            path.move_to(Pnt(x, y))
+            path.circle(radius/12)
+            radius *= 1.06
+        sketch.pad(5000)
+        recompute()
+        Gui.SendMsgToActiveView("ViewFit")
+
+
 with Dialog(title="FCScript Demo") as dialog:
     if not App.ActiveDocument:
         App.newDocument()
@@ -438,3 +459,6 @@ with Dialog(title="FCScript Demo") as dialog:
 
             @button(text="Test19: Options")
             def run_test19(): test19_options()
+
+            @button(text="Test20: Spiral (LinkStage3)")
+            def run_test20(): test20()
