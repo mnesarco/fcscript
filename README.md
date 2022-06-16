@@ -6,6 +6,10 @@ Work In Progress ....
 
 ![My Image](screenshot.jpg)
 
+
+Demo video: https://www.youtube.com/watch?v=vs939L5Ku2Q
+
+
 ## Usage
 
 This AddOn is for people interested in writing macros for FreeCAD. The intention is 
