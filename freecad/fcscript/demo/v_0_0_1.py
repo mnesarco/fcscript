@@ -394,6 +394,67 @@ def test20():
         Gui.SendMsgToActiveView("ViewFit")
 
 
+def test21():
+    """Generate Part Demo"""
+    # GUI
+    with Dialog("Part Demo Changed"):
+        # Get Input parameters
+        main_radius_input = InputFloat(label="Main Hole Radius:", value=100)
+        small_radius_input = InputFloat(label="Small Holes Radius:", value=10)
+        margin_input = InputFloat(label="Distance between Main Hole and small Holes:", value=10)
+        corner_input = InputFloat(label="Corner Angle Offset:", value=5)
+        thickness_input = InputFloat(label="Thickness:", value=5)
+
+        # Polar to Cartesian converter
+        def coords(radius, angle):
+            angle = radians(angle)
+            return radius * cos(angle), radius * sin(angle)
+
+        @button(text="Create")
+        def execute():
+
+            # Read inputs
+            main_radius = main_radius_input.value()
+            small_radius = small_radius_input.value()
+            margin = margin_input.value()
+            thickness = thickness_input.value()
+            dev = corner_input.value()
+
+            # Create base objects
+            body = XBody(name='test21')
+            sketch = body.sketch(plane='XY', name='sketch')
+            path = sketch.create_group()
+
+            # Main hole
+            path.circle(main_radius)
+
+            # Small Holes
+            for angle in (90, 210, 330):
+                path.move_to(coords(main_radius + margin + small_radius, angle))
+                path.circle(small_radius)
+
+            # Perimeter bspline
+            points = []
+            outer = main_radius + 2*margin + 2*small_radius
+            points.append(coords(outer, 90))
+            angle = 90
+            for t in range(3):
+                points.append(coords(outer, angle + dev))
+                points.append(coords(outer-2*margin, angle + 60 - dev))
+                points.append(coords(outer-2*margin, angle + 60))
+                points.append(coords(outer-2*margin, angle + 60 + dev))
+                points.append(coords(outer, angle + 120 - dev))
+                angle += 120
+            points.append(coords(outer, 90))
+            points.append(coords(outer, 90))
+            path.move_to(coords(outer, 90))
+            path.bspline_to(*points)
+
+            sketch.pad(thickness)
+            recompute()       
+            Gui.SendMsgToActiveView("ViewFit")
+
+
 with Dialog(title="FCScript Demo") as dialog:
     if not App.ActiveDocument:
         App.newDocument()
@@ -411,9 +472,10 @@ with Dialog(title="FCScript Demo") as dialog:
             @button(text="Test4: Extrusion")
             def run_test4(): test4()
 
-        with Col():
             @button(text="Test5: Rounded Rect")
             def run_test5(): test5()
+
+        with Col():
 
             @button(text="Test6: Asymmetric Rounded Rect")
             def run_test6(): test6()
@@ -424,12 +486,13 @@ with Dialog(title="FCScript Demo") as dialog:
             @button(text="Test8: Hive")
             def run_test8(): test_8_hive()
 
-        with Col():
             @button(text="Test11: Dialogs Basic")
             def run_test11(): test11_diag3()
 
             @button(text="Test10: Dialogs Col")
             def run_test10(): test10_diag2()
+
+        with Col():
 
             @button(text="Test9: Dialogs Row/Col")
             def run_test9(): test9_diag1()
@@ -437,7 +500,6 @@ with Dialog(title="FCScript Demo") as dialog:
             @button(text="Test12: Dialogs Button")
             def run_test12(): test12_diag4()
 
-        with Col():
             @button(text="Test13: Dialogs Single Select")
             def run_test13(): test13_diag5()
 
@@ -447,10 +509,11 @@ with Dialog(title="FCScript Demo") as dialog:
             @button(text="Test15: Dialogs Tabs")
             def run_test15(): test15_diag7()
 
+        with Col():
+
             @button(text="Test16: Message Boxes")
             def run_test16(): test16_msgboxes()
 
-        with Col():
             @button(text="Test17: Data Object")
             def run_test17(): test17_parametric()
 
@@ -462,3 +525,9 @@ with Dialog(title="FCScript Demo") as dialog:
 
             @button(text="Test20: Spiral (LinkStage3)")
             def run_test20(): test20()
+
+        with Col():
+
+            @button(text="Test21: Part")
+            def run_test21(): test21()
+
