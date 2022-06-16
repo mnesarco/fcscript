@@ -1078,7 +1078,7 @@ def place_widget(ed, label=None, stretch=0, alignment=QtCore.Qt.Alignment()):
     """Place widget in layout."""
     layout = build_context().current().layout()
     if layout is None:
-        layout = QtGui.QHBoxLayout()
+        layout = QtGui.QVBoxLayout()
         build_context().current().setLayout(layout)   
     if label is None:
         build_context().current().layout().addWidget(ed, stretch, alignment)
