@@ -66,7 +66,7 @@ def test2_partial(body, plane):
     rows, cols = 5, 3
     w, h = 25, 10
     sx, sy = 15, 5
-    s = body.sketch(plane=plane, name=f'test2_{plane}')
+    s = body.sketch(plane=plane, name=plane)
     g = s.create_group()
 
     x, y = g.pos[0], g.pos[1]
@@ -80,7 +80,7 @@ def test2_partial(body, plane):
         y = y + h + sy
 
     s.rotate(45)
-    s.pad(10, name=f'Pad_{plane}')
+    s.pad(10, name=f'Pad{plane}')
     recompute()
 
 
@@ -97,7 +97,7 @@ def test3():
         side = 100
 
         body = XBody(name='test3')   
-        sketch = body.sketch(plane='XY', name='test3_s1')
+        sketch = body.sketch(plane='XY', name='s1')
 
         path = sketch.create_group()
         path.rect_to(Pnt(side, side))
@@ -118,7 +118,7 @@ def test3():
 def test4():
     with progress_indicator():    
         body = XBody(name='test4')   
-        sketch = body.sketch(plane='XY', name='test4_s2')
+        sketch = body.sketch(plane='XY', name='s2')
         path = sketch.create_group()
 
         path.line_to(Pnt(10,0))
@@ -139,7 +139,7 @@ def test4():
 def test5():
     with progress_indicator():    
         body = XBody(name='test5')
-        sketch = body.sketch(plane='XY', name='test5_s1')
+        sketch = body.sketch(plane='XY', name='s1')
         path = sketch.create_group()
         path.rect_rounded(w=7, h=14, r=2, angle=Quantity('45 deg'))   
         path.move_to((50,0))
@@ -151,7 +151,7 @@ def test5():
 def test6():
     with progress_indicator():    
         body = XBody(name='test6')
-        sketch = body.sketch(plane='XY', name='test6_s1')
+        sketch = body.sketch(plane='XY', name='s1')
         path = sketch.create_group()
         path.rect_rounded(w=10, h=10, r=(1,2,1,2), angle=Expr("30 deg"))
         path.move_to((50,0))
@@ -163,7 +163,7 @@ def test6():
 def test_7_polygons():
     with progress_indicator():    
         body = XBody(name='test7')
-        sketch = body.sketch(plane='XY', name='test7_poly')
+        sketch = body.sketch(plane='XY', name='poly')
         path = sketch.create_group()
 
         def auto(fn, *args, **kwargs):
@@ -188,7 +188,7 @@ def test_7_polygons():
 def test_8_hive():
     with progress_indicator():    
         body = XBody(name='test8')
-        sketch = body.sketch(plane='XY', name='test8_s1')
+        sketch = body.sketch(plane='XY', name='s1')
         path = sketch.create_group()
         size = 10
         sep = 1,-1
@@ -353,7 +353,7 @@ def test18_rounded_rect():
             @button(text="Create")
             def create():
                 body = XBody(name='test18')
-                sketch = body.sketch(plane='XY', name='test18_sketch')
+                sketch = body.sketch(plane='XY', name='sketch')
                 path = sketch.create_group()
                 path.rect_rounded(w=width.value(), h=length.value(), r=radius.value())
                 sketch.pad(height.value())

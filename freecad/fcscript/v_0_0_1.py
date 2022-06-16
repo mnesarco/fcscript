@@ -291,6 +291,8 @@ class XSketch:
 
     def __init__(self, name: str = 'XSketch', parent: Any = None, clean: bool = True):
         XSketch.select_default_solver(XSketch.DEFAULT_SOLVER)        
+        if parent:
+            name = f"{parent.Name}_{name}"
         self.obj = App.ActiveDocument.getObject(name)
         if self.obj:
             if clean:
@@ -619,6 +621,7 @@ class XSketch:
     #  ┌────────────────────────────────────────────────────────────────────────────┐
 
     def pad(self, value, name='Pad', direction=None):
+        name = f"{self.obj.Name}_{name}"
         if self.parent:
             feature = self.parent.getObject(name)
             if not feature:
@@ -971,6 +974,16 @@ class XBody:
         sketch.MapPathParameter = parameter
         sketch.MapMode = mode
         return xsketch
+
+
+    def fillet(self, edges: list, name='Fillet'):
+        name = f"{self.name}_{name}"
+        fillet = App.ActiveDocument.getObject(name)
+        if not fillet:
+            fillet = App.ActiveDocument.addObject('Part::Fillet', name)
+        fillet.Base = self.obj
+        fillet.Edges = [*edges]
+        Gui.ActiveDocument.getObject(self.name).Visibility = False
 
 
 #  └────────────────────────────────────────────────────────────────────────────┘
