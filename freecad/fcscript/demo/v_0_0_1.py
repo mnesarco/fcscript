@@ -20,7 +20,7 @@
 
 from math import cos, radians, sin, sqrt
 from freecad.fcscript.v_0_0_1 import (
-    InputOptions, InputVector, XBody, XSketch, Vec, Pnt, Quantity, recompute, Dx, Dy, Dz, Expr,
+    InputOptions, InputText, InputVector, XBody, XSketch, Vec, Pnt, Quantity, recompute, Dx, Dy, Dz, Expr,
     Dialog, InputFloat, InputInt, InputSelectMany, InputSelectOne, 
     InputBoolean, Icon, Row, Col, TabContainer, Tab,
     button, on_event, gq, progress_indicator, selection, 
@@ -399,6 +399,7 @@ def test21():
     # GUI
     with Dialog("Part Demo Changed"):
         # Get Input parameters
+        base_name = InputText(label="Name:", value="test21")
         main_radius_input = InputFloat(label="Main Hole Radius:", value=100)
         small_radius_input = InputFloat(label="Small Holes Radius:", value=10)
         margin_input = InputFloat(label="Distance between Main Hole and small Holes:", value=10)
@@ -421,7 +422,7 @@ def test21():
             dev = corner_input.value()
 
             # Create base objects
-            body = XBody(name='test21')
+            body = XBody(name=base_name.value() or 'test21')
             sketch = body.sketch(plane='XY', name='sketch')
             path = sketch.create_group()
 

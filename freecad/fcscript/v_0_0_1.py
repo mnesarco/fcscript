@@ -1383,6 +1383,29 @@ def InputFloat(name=None, min=0.0, max=sys.float_info.max, decimals=6,
 #    [SECTION] [GUI] [Widget] InputInt
 #  ┌────────────────────────────────────────────────────────────────────────────┐
 
+class InputTextWidget(QtGui.QLineEdit):
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+    def value(self):
+        return self.text()
+    def setValue(self, value):
+        self.setText(str(value))
+
+def InputText(name=None, label=None, value="", 
+             stretch=0, alignment=QtCore.Qt.Alignment(), **kwargs):
+    editor = InputTextWidget()
+    editor.setText(value)
+    set_qt_attrs(editor, **kwargs)
+    if name:
+        editor.setObjectName(name)
+    place_widget(editor, label=label, stretch=stretch, alignment=alignment)
+    return editor
+
+
+#  └────────────────────────────────────────────────────────────────────────────┘
+#    [SECTION] [GUI] [Widget] InputInt
+#  ┌────────────────────────────────────────────────────────────────────────────┐
+
 def InputInt(name=None, min=0, max=2^31, step=1, label=None, value=0, 
              stretch=0, alignment=QtCore.Qt.Alignment(), **kwargs):
     editor = QtGui.QSpinBox()
@@ -1620,7 +1643,7 @@ class InputSelectMany:
                     self.display.clear()
 
                 Stretch()
-                
+
             display = QtGui.QTreeWidget()
             display.setColumnCount(2)
             display.setHeaderLabels(['Object', 'SubObject'])
