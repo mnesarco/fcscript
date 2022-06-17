@@ -1290,6 +1290,17 @@ def GroupBox(title=None):
 
 
 #  └────────────────────────────────────────────────────────────────────────────┘
+#    [SECTION] [GUI] [Widget] Stretch
+#  ┌────────────────────────────────────────────────────────────────────────────┐
+
+def Stretch(stretch=0):
+    """Add Layout spacer"""
+    layout = build_context().current().layout()
+    if layout:
+        layout.addStretch(stretch)
+
+
+#  └────────────────────────────────────────────────────────────────────────────┘
 #    [SECTION] [GUI] [Widget] TabContainer
 #  ┌────────────────────────────────────────────────────────────────────────────┐
 
@@ -1341,8 +1352,9 @@ def Row(add=True, **kwargs):
 #    [SECTION] [GUI] [Widget] TextLabel
 #  ┌────────────────────────────────────────────────────────────────────────────┐
 
-def TextLabel(text="", stretch=0, alignment=QtCore.Qt.Alignment()):
+def TextLabel(text="", stretch=0, alignment=QtCore.Qt.Alignment(), **kwargs):
     label = QtGui.QLabel(text)
+    set_qt_attrs(label, **kwargs)
     place_widget(label, stretch=stretch, alignment=alignment)
     return label
 
@@ -1351,13 +1363,16 @@ def TextLabel(text="", stretch=0, alignment=QtCore.Qt.Alignment()):
 #    [SECTION] [GUI] [Widget] InputFloat
 #  ┌────────────────────────────────────────────────────────────────────────────┐
 
-def InputFloat(name=None, min=0.0, max=sys.float_info.max, decimals=6, step=0.01, label=None, value=0.0, stretch=0, alignment=QtCore.Qt.Alignment()):
+def InputFloat(name=None, min=0.0, max=sys.float_info.max, decimals=6, 
+               step=0.01, label=None, value=0.0, stretch=0, 
+               alignment=QtCore.Qt.Alignment(), **kwargs):
     editor = QtGui.QDoubleSpinBox()
     editor.setMinimum(min)
     editor.setMaximum(max)
     editor.setSingleStep(step)
     editor.setDecimals(decimals)
     editor.setValue(value)
+    set_qt_attrs(editor, **kwargs)
     if name:
         editor.setObjectName(name)
     place_widget(editor, label=label, stretch=stretch, alignment=alignment)
@@ -1368,12 +1383,14 @@ def InputFloat(name=None, min=0.0, max=sys.float_info.max, decimals=6, step=0.01
 #    [SECTION] [GUI] [Widget] InputInt
 #  ┌────────────────────────────────────────────────────────────────────────────┐
 
-def InputInt(name=None, min=0, max=2^31, step=1, label=None, value=0, stretch=0, alignment=QtCore.Qt.Alignment()):
+def InputInt(name=None, min=0, max=2^31, step=1, label=None, value=0, 
+             stretch=0, alignment=QtCore.Qt.Alignment(), **kwargs):
     editor = QtGui.QSpinBox()
     editor.setMinimum(min)
     editor.setMaximum(max)
     editor.setSingleStep(step)
     editor.setValue(value)
+    set_qt_attrs(editor, **kwargs)
     if name:
         editor.setObjectName(name)
     place_widget(editor, label=label, stretch=stretch, alignment=alignment)
@@ -1395,9 +1412,11 @@ class QCheckBoxExt(QtGui.QCheckBox):
         self.setCheckState(QtCore.Qt.Checked if value else QtCore.Qt.Unchecked)
 
 
-def InputBoolean(name=None, label=None, value=False, stretch=0, alignment=QtCore.Qt.Alignment()):
+def InputBoolean(name=None, label=None, value=False, stretch=0, 
+                 alignment=QtCore.Qt.Alignment(), **kwargs):
     editor = QCheckBoxExt()
     editor.setValue(value)
+    set_qt_attrs(editor, **kwargs)
     if name:
         editor.setObjectName(name)
     place_widget(editor, label=label, stretch=stretch, alignment=alignment)
@@ -1458,8 +1477,10 @@ class InputOptionsWrapper:
         if index is not None:
             self.combobox.setCurrentIndex(index)
 
-def InputOptions(options, value=None, label=None, name=None, stretch=0, alignment=QtCore.Qt.Alignment()):
+def InputOptions(options, value=None, label=None, name=None, stretch=0, 
+                 alignment=QtCore.Qt.Alignment(), **kwargs):
     widget = QtGui.QComboBox()
+    set_qt_attrs(widget, **kwargs)
     editor = InputOptionsWrapper(widget, options)
     if value is not None:
         editor.setValue(value)
@@ -1579,6 +1600,7 @@ class InputSelectMany:
                 @button(
                     text="Remove", 
                     tool=True,
+                    alignment=QtCore.Qt.AlignLeft,
                     focusPolicy=QtCore.Qt.FocusPolicy.NoFocus)
                 def remove():
                     selected = self.display.selectedItems()
@@ -1590,12 +1612,15 @@ class InputSelectMany:
                 @button(
                     text="Clean",
                     tool=True,
+                    alignment=QtCore.Qt.AlignLeft,
                     focusPolicy=QtCore.Qt.FocusPolicy.NoFocus,
                     icon=Icon(':icons/edit-cleartext.svg'))
                 def clear(): 
                     self._value.clear()
                     self.display.clear()
 
+                Stretch()
+                
             display = QtGui.QTreeWidget()
             display.setColumnCount(2)
             display.setHeaderLabels(['Object', 'SubObject'])
@@ -1646,12 +1671,16 @@ class InputSelectMany:
 #    [SECTION] [GUI] [Widget] button
 #  ┌────────────────────────────────────────────────────────────────────────────┐
 
-def button(add:bool=True, tool:bool=False, stretch=0, alignment=QtCore.Qt.Alignment(), **kwargs):
+def button(label=None, add:bool=True, tool:bool=False, stretch=0, alignment=QtCore.Qt.Alignment(), **kwargs):
     if tool:
         btn = QtGui.QToolButton()
     else:
         btn = QtGui.QPushButton()
     set_qt_attrs(btn, **kwargs)
+    if label: 
+        btn.setText(label)
+    elif 'text' not in kwargs:
+        btn.setText("Button")
     if add:
         place_widget(btn, stretch=stretch, alignment=alignment)
     def wrapper(handler):
@@ -1688,8 +1717,10 @@ def show_msgbox(message, title="Information", std_icon=QtGui.QMessageBox.Informa
 def show_warning(message, title="Warning", std_icon=QtGui.QMessageBox.Warning, std_buttons=QtGui.QMessageBox.NoButton, parent=None):
     show_msgbox(message, title, std_icon, std_buttons, parent)
 
+
 def show_error(message, title="Error", std_icon=QtGui.QMessageBox.Critical, std_buttons=QtGui.QMessageBox.NoButton, parent=None):
     show_msgbox(message, title, std_icon, std_buttons, parent)
+
 
 show_info = show_msgbox
 
