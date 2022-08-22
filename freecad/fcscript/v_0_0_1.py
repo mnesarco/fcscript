@@ -175,7 +175,7 @@ def Dz(v: Union[float, Vec]):
 
 #: Decorator
 def set_function(target, attribute):
-    """Decorator: Set function to an attribute of targer."""
+    """Decorator: Set function to an attribute of target."""
     def deco(fn):
         setattr(target, attribute, fn)
         return fn
