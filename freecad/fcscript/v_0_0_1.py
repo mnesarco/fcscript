@@ -1716,9 +1716,25 @@ def button(label=None, add:bool=True, tool:bool=False, stretch=0, alignment=QtCo
 #    [SECTION] [GUI] progress_indicator
 #  ┌────────────────────────────────────────────────────────────────────────────┐
 
+class ProgressIndicator:
+    def __init__(self, *args, **kwargs) -> None:
+        try:
+            self.control = Base.ProgressIndicator(*args, **kwargs)
+        except:
+            self.control = None
+    def start(self, *args, **kwargs):
+        if self.control:
+            self.control.start(*args, **kwargs)
+    def next(self, *args, **kwargs):
+        if self.control:
+            self.control.next(*args, **kwargs)
+    def stop(self, *args, **kwargs):
+        if self.control:
+            self.control.stop(*args, **kwargs)
+
 @contextmanager
 def progress_indicator(message: str = "Working...", steps: int = 0):
-    bar = Base.ProgressIndicator()
+    bar = ProgressIndicator()
     bar.start(message, steps)
     try:
         yield bar
